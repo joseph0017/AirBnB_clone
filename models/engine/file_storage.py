@@ -1,5 +1,8 @@
+#!/usr/bin/python3
 """Module for file_storage"""
+
 import json
+
 
 class FileStorage():
     """

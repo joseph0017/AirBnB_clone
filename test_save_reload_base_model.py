@@ -1,6 +1,10 @@
+#!/usr/bin/python3
+"""test for test_save_reload_base_model BaseModel function"""
+
 from models import storage
 from models.base_model import BaseModel
 import json
+
 
 all_objs = storage.all()
 print("-- Reloaded objects --")

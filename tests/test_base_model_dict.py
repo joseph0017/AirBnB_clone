@@ -1,4 +1,5 @@
-# from models.base_model import BaseModel
+#!/usr/bin/python3
+"""test for test_base_model_dict BaseModel function"""
 
 from models.base_model import BaseModel
 
