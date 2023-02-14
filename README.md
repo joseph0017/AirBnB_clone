@@ -210,3 +210,7 @@ e.g., For models/user.py, unit tests must be in: tests/test_models/test_user.py
 
 ### 17. Unittests for the Console!
 - Write all unittests for console.py, all features!
+
+## Authors
+- **Marisol Ramirez Henao** - [Marisol github](https://github.com/Marisol2201)
+- **Daniela Lopera Hernandez** - [Daniela github](https://github.com/danielaloperahernandez)

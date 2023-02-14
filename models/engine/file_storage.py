@@ -26,13 +26,11 @@ class FileStorage():
         FileStorage.__objects[key] = obj
 
     def save(self):
-        """
-        serializes __objects to the JSON file (path: __file_path)
-        """   
-        json_data = FileStorage.__objects
-        json_object = {obj: json_data[obj].to_dict() for obj in json_data.keys()}
+        """serializes __objects to the JSON file (path: __file_path)"""
+        json_d = FileStorage.__objects
+        obj_json = {obj: json_d[obj].to_dict() for obj in json_d.keys()}
         with open(FileStorage.__file_path, "w") as file:
-            json.dump(json_object, file, default=lambda o: o.__dict__, indent=4)
+            json.dump(obj_json, file, default=lambda o: o.__dict__, indent=4)
 
     def reload(self):
         """
@@ -47,3 +45,13 @@ class FileStorage():
                 FileStorage.__objects[k] = BaseModel(**v)
         except:
             pass
+
+    def delete(self, obj=None):
+        """delete objects from BaseModel"""
+        if obj:
+            try:
+                key = "{}.{}".format(type(obj).__name__, obj.id)
+                del self.__objects[key]
+                self.save()
+            except:
+                pass

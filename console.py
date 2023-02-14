@@ -1,52 +1,44 @@
 #!/usr/bin/python3
-"""This is the console for AirBnB"""
+"""This is the main console for AirBnB"""
+
 import cmd
-import models
 from models.base_model import BaseModel
+import models
+
 
 
 class HBNBCommand(cmd.Cmd):
-    """
-    Air Bnb main console cmd class
-    """
+    """AirBnB console main class"""
     prompt = "(hbnb) "
-    class_list = BaseModel
-    def do_quit(self, arg):
-        """
-        quits or exits console
-        """
-        return True
 
     def do_EOF(self, arg):
-        """
-        handles the end of file
-        """
+        """Handle End Of File"""
         return True
 
-    def do_help(self, arg):
-        """
-        pops up help menu
-        """
+    def do_quit(self, arg):
+        """Exit program"""
         return True
 
-    
+    def emptyline(self):
+        """If line is empty don't do anything"""
+        pass
+
     def do_create(self, arg):
         """
-        Creates a new instance of BaseModel, saves it
-        (to the JSON file) and prints the id.
-        Ex: $ create BaseModel
+        Creates a new instance of BaseModel, saves it (to the JSON file)
+        and prints the id. Ex: $ create BaseModel
         """
         if len(arg) == 0:
             print("** class name missing **")
         else:
             try:
-                new_class = HBNBCommand.class_list
+                cls = models.classes[arg]
             except KeyError:
                 print("** class doesn't exist **")
             else:
-                new_object = new_class()
-                new_object.save()
-                print(new_object.id)
+                obj = cls()
+                obj.save()
+                print(obj.id)
 
     def do_show(self, arg):
         """
@@ -71,6 +63,32 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** class doesn't exist **")
 
+    def do_destroy(self, arg):
+        """
+         Deletes an instance based on the class name and id
+         (save the change into the JSON file).
+         Ex: $ destroy BaseModel 1234-1234-1234.
+         """
+        if len(arg) == 0:
+            print("** class name missing **")
+        else:
+            line = arg.split(' ')
+            if line[0] in models.classes:
+                try:
+                    key = "{}.{}".format(line[0], line[1])
+                except IndexError:
+                    print("** instance id missing **")
+                else:
+                    try:
+                        objects = models.storage.all()
+                        models.storage.delete(objects[key])
+                    except KeyError:
+                        print("** no instance found **")
+                    else:
+                        models.storage.save()
+            else:
+                print("** class doesn't exist **")
+
     def do_all(self, arg):
         """
         Prints all string representation of all instances
@@ -85,12 +103,20 @@ class HBNBCommand(cmd.Cmd):
             print([str(value) for key, value in models.storage.all().items()
                    if arg in key])
 
+ 
 
-
-
-
-    def postloop(self):
-        print
+    def do_count(self, arg):
+        """
+        Retrieve the number of instances of a class: <class name>.count()
+        """
+        if len(arg) == 0:
+            print(len([str(value) for value in models.storage.all().values()]))
+        elif arg in models.classes:
+            print(len([str(value) for key, value in
+                       models.storage.all().items()
+                      if arg in key]))
+        else:
+            print("** class doesn't exist **")
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
