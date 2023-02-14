@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """This is the console for AirBnB"""
-
 import cmd
 import models
 from models.base_model import BaseModel
@@ -66,7 +65,7 @@ class HBNBCommand(cmd.Cmd):
                     print("** instance id missing **")
                 else:
                     try:
-                        print(models.storage.all())
+                        print(models.storage.all()[key])
                     except KeyError:
                         print("** no instance found **")
             else:
@@ -78,7 +77,13 @@ class HBNBCommand(cmd.Cmd):
         based or not on the class name.
         Ex: $ all BaseModel or $ all
         """
-        print(models.storage.all())
+        if len(arg) == 0:
+            print([str(value) for value in models.storage.all().values()])
+        elif arg not in models.classes:
+            print("** class doesn't exist **")
+        else:
+            print([str(value) for key, value in models.storage.all().items()
+                   if arg in key])
 
 
 

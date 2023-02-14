@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """Module for file_storage"""
-
 import json
+from models.base_model import BaseModel
 
 
 class FileStorage():
@@ -40,12 +40,10 @@ class FileStorage():
         (only if the JSON file (__file_path) exists ; otherwise,
         do nothing. If the file doesn’t exist, no exception should be raised
         """
-        dict_ = {}
         try:
-            with open(self.__file_path, "r") as f:
-                dict_ = json.loads(f.read())
-                for key, value in dict_.items():
-                    class_name = key.split(".")
-                    self.__objects[key] = eval(class_name[0])(**value)
-        except FileNotFoundError:
+            with open(FileStorage.__file_path, 'r', encoding='utf-8') as file:
+                json_load = json.load(file)
+            for k, v in json_load.items():
+                FileStorage.__objects[k] = BaseModel(**v)
+        except:
             pass

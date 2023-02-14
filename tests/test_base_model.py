@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """test for test_base_model_ BaseModel function"""
-
 from models.base_model import BaseModel
 
 
